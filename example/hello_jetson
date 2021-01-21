@@ -1,8 +1,10 @@
 #!/usr/bin/python3
+import actfw_gstreamer
+actfw_gstreamer.init()
+
 from queue import Full
 from PIL import Image, ImageDraw, ImageFont
 import actfw_core
-import actfw_jetson
 from actfw_jetson import Display
 from actfw_core.task import Pipe, Consumer, Producer
 from actfw_core.capture import Frame
@@ -106,5 +108,4 @@ def main():
 
 
 if __name__ == '__main__':
-    actfw_jetson.init()
     main()
