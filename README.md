@@ -27,7 +27,7 @@ Note that an application using actfw-jetson may call [`actfw_gstreamer.init()`](
 
 actfw-jetson provides:
 
-- `actfw_gstreamer.jetson.Display` : Display using `nvoverlaysink` element in [NVIDIA's Accelerated GStreamer](https://docs.nvidia.com/jetson/l4t/index.html#page/Tegra%20Linux%20Driver%20Package%20Development%20Guide/accelerated_gstreamer.html).
+- `actfw_jetson.Display` : Display using `nvoverlaysink` element in [NVIDIA's Accelerated GStreamer](https://docs.nvidia.com/jetson/l4t/index.html#page/Tegra%20Linux%20Driver%20Package%20Development%20Guide/accelerated_gstreamer.html).
 
 ## Example
 
