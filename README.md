@@ -47,7 +47,7 @@ actfw-jetson provides:
 
 ```console
 pip3 install pipenv
-pipenv install --dev -e .
+pipenv install --ignore-pipfile --dev -e .
 ```
 
 ### Running tests
