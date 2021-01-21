@@ -24,10 +24,10 @@
         },
         "actfw-gstreamer": {
             "hashes": [
-                "sha256:08b167cf47dd771e744114994e646f0c6dc31ed99fbde3fd795941241a376779",
-                "sha256:3b548c543a377f8d35de6f46d205f393c76c4043c4bf5eaf9c3141fadd77d2c1"
+                "sha256:44486c4c03db03d9ed026a3e3b6d2cf9c9cbf3b60100931b77e77f6f9a30df00",
+                "sha256:e183a0a261b39e7a760676edb817c4cd45008559690c712625a86d677e167448"
             ],
-            "version": "==0.1.0a2"
+            "version": "==0.1.0a3"
         },
         "actfw-jetson": {
             "editable": true,
@@ -321,10 +321,10 @@
         },
         "snowballstemmer": {
             "hashes": [
-                "sha256:209f257d7533fdb3cb73bdbd24f436239ca3b2fa67d56f6ff88e86be08cc5ef0",
-                "sha256:df3bac3df4c2c01363f3dd2cfa78cce2840a79b9f1c2d2de9ce8d31683992f52"
+                "sha256:b51b447bea85f9968c13b650126a888aabd4cb4463fca868ec596826325dedc2",
+                "sha256:e997baa4f2e9139951b6f4c631bad912dfd3c792467e2f03d7239464af90e914"
             ],
-            "version": "==2.0.0"
+            "version": "==2.1.0"
         },
         "sphinx": {
             "hashes": [
