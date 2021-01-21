@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+actfw-jetson = {editable = true, path = "."}
+# Tests
+nose2 = "*"
+# Lint
+autopep8 = "*"
+# Document
+sphinx = "*"
+sphinx-theme = "*"
+
+[pipenv]
+allow_prereleases = true # TODO remove after actfw-gstreamer is released
