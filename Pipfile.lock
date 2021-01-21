@@ -24,10 +24,10 @@
         },
         "actfw-gstreamer": {
             "hashes": [
-                "sha256:44486c4c03db03d9ed026a3e3b6d2cf9c9cbf3b60100931b77e77f6f9a30df00",
-                "sha256:e183a0a261b39e7a760676edb817c4cd45008559690c712625a86d677e167448"
+                "sha256:cc201b647cb142be1644d2bce0ee69ae923fd991d52a21c799b3f311f532a589",
+                "sha256:eab2ac3a10506faa1f7fd4bda67bf7300a20b641ece29b9c59e82462d29b3968"
             ],
-            "version": "==0.1.0a3"
+            "version": "==0.1.0a4"
         },
         "actfw-jetson": {
             "editable": true,
