@@ -67,9 +67,9 @@ jobs:
       - checkout
       - pipenv-install
       - run:
-          name: Check code format
+          name: Check code format in actfw-jetson/
           command: |
-            [ $(pipenv run autopep8 --diff --max-line-length 128 -r . | wc -l) = 0 ]
+            [ $(pipenv run autopep8 --diff --max-line-length 128 -r actfw_jetson/ | wc -l) = 0 ]
 
   test:
     docker:
