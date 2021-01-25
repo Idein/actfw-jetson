@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b76c4dc2f0c520d316a91446aecee08412584c493ec72ca8ce2cfc655521ccb0"
+            "sha256": "db5a465c92878b3bbf92fdc22cdc6e660da5269028e8c7c845403deb13fb6b5b"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -24,10 +24,10 @@
         },
         "actfw-gstreamer": {
             "hashes": [
-                "sha256:cc201b647cb142be1644d2bce0ee69ae923fd991d52a21c799b3f311f532a589",
-                "sha256:eab2ac3a10506faa1f7fd4bda67bf7300a20b641ece29b9c59e82462d29b3968"
+                "sha256:5bd59cd480631b99739d0b624b7c343d79c66a4df429def548c1684e43498f4d",
+                "sha256:f6e6fba6f981a875913ea896e2c05dc0659cb1266835c739b6dbbab29d27a0fb"
             ],
-            "version": "==0.1.0a4"
+            "version": "==0.1.0a5"
         },
         "actfw-jetson": {
             "editable": true,
