@@ -68,7 +68,7 @@ class Display:
         Args:
             src_im (PIL.Image): update image (RGB)
         """
-        gst_buffer = Display._im_to_gst_buffer(src_im)
+        gst_buffer = self._im_to_gst_buffer(src_im)
         self._appsrc.emit('push-buffer', gst_buffer)
         return self._Gst.FlowReturn.OK
 
@@ -80,8 +80,7 @@ class Display:
     def _on_bus_error(cls, bus, msg):
         print('on_error():', msg.parse_error())
 
-    @classmethod
-    def _im_to_gst_buffer(cls, im: Image) -> self._Gst.Buffer:
+    def _im_to_gst_buffer(self, im: Image):
         """Converts PIL Image (RGB) to Gst.Buffer (RGBA)"""
         im.putalpha(255)
         return self._Gst.Buffer.new_wrapped(im.tobytes())
