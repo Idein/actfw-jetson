@@ -23,7 +23,17 @@ pip3 install actfw-jetson
 
 See [actfw-core](https://github.com/Idein/actfw-core) for basic usage.
 
-Note that an application using actfw-jetson may call [`actfw_gstreamer.init()`](https://idein.github.io/actfw-gstreamer/latest/actfw_gstreamer.html#actfw_gstreamer.init) at first if it uses at least 1 component depending on GStreamer.
+Since actfw-jetson uses GStreamer to implement some components, an application using actfw-jetson may have to initialize GStreamer library before using actfw-jetson's components.
+
+```python
+if __name__ == '__main__':
+    import gi
+    gi.require_version('Gst', '1.0')
+    from gi.repository import Gst, GObject
+    Gst.init(None)
+
+    main()
+```
 
 actfw-jetson provides:
 
