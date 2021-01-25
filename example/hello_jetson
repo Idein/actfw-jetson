@@ -105,8 +105,9 @@ def main():
 
 
 if __name__ == '__main__':
+    import gi
+    gi.require_version('Gst', '1.0')
     from gi.repository import Gst, GObject
-    GObject.threads_init()
     Gst.init(None)
 
     main()
