@@ -1,7 +1,4 @@
 #!/usr/bin/python3
-import actfw_gstreamer
-actfw_gstreamer.init()
-
 from queue import Full
 from PIL import Image, ImageDraw, ImageFont
 import actfw_core
@@ -108,4 +105,8 @@ def main():
 
 
 if __name__ == '__main__':
+    from gi.repository import Gst, GObject
+    GObject.threads_init()
+    Gst.init(None)
+
     main()
