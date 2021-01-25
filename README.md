@@ -29,7 +29,7 @@ Since actfw-jetson uses GStreamer to implement some components, an application u
 if __name__ == '__main__':
     import gi
     gi.require_version('Gst', '1.0')
-    from gi.repository import Gst, GObject
+    from gi.repository import Gst
     Gst.init(None)
 
     main()
