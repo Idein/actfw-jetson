@@ -10,7 +10,7 @@ sudo apt-get update
 sudo apt-get install -y python3-pip python3-pil 
 
 # Install GStreamer dependencies (some components in actfw-jetson uses GStreamer in implementation)
-sudo apt-get install libgstreamer1.0-dev libgirepository1.0-dev ibgstreamer-plugins-base1.0-dev libglib2.0-dev
+sudo apt-get install -y libgstreamer1.0-dev libgirepository1.0-dev ibgstreamer-plugins-base1.0-dev libglib2.0-dev libcairo2-dev
 
 pip3 install actfw-jetson
 ```
