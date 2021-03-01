@@ -56,14 +56,14 @@ actfw-jetson provides:
 ### Installation of dev requirements
 
 ```console
-pip3 install pipenv
-pipenv install --ignore-pipfile --dev -e .
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+poetry install
 ```
 
 ### Running tests
 
 ```console
-pipenv run nose2 -v
+poetry run nose2 -v
 ```
 
 ### Running examples
@@ -72,7 +72,7 @@ On a Jetson Nano connected to HDMI display:
 
 ```console
 apt-get install fonts-dejavu-core
-pipenv run python example/hello_jetson
+poetry run python example/hello_jetson
 ```
 
 ### Releasing package & API doc
