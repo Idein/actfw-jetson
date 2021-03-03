@@ -239,7 +239,7 @@ workflows:
       - test:
           context:
             - docker-hub-creds
-      - test-skip-lock:
+      - test-with-up-to-date-dependencies:
           context:
             - docker-hub-creds
       - build-api-doc:
