@@ -25,7 +25,6 @@ class Display:
 
         # define elements
         self._appsrc = self._Gst.ElementFactory.make('appsrc')
-        self._appsrc.set_property('emit-signals', True)
         self._appsrc.set_property('is-live', True)
         self._appsrc.set_property('block', True)
 
