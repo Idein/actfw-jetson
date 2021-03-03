@@ -67,7 +67,7 @@ jobs:
       - run:
           name: nose2
           command: poetry run nose2 -v
-  test-skip-lock:
+  test-with-up-to-date-dependencies:
     docker:
       - image: python:3-buster
         auth: *docker-hub-auth
