@@ -1,0 +1,33 @@
+[tool.poetry]
+authors = ["Idein Inc."]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3 :: Only",
+]
+description = "actfw's additional components for Jetson series"
+keywords = ['actcast']
+license = "MIT"
+name = "actfw-jetson"
+readme = "README.md"
+repository = "https://github.com/Idein/actfw-jetson"
+version = "0.1.0a1"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+actfw-gstreamer = "*"
+
+[tool.poetry.dev-dependencies]
+# Tests
+nose2 = "*"
+# Lint
+autopep8 = "*"
+# Document
+sphinx = "*"
+sphinx-theme = "*"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]

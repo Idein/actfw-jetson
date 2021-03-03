@@ -1,0 +1,250 @@
+version: 2.1
+
+commands:
+  install-python-dev-tools:
+    steps:
+      - run:
+          name: Install python dev tools and dependencies
+          command: |
+            apt-get update
+            apt-get install -y ca-certificates python3-pip
+            apt-get install -y libgstreamer1.0-dev libgirepository1.0-dev ibgstreamer-plugins-base1.0-dev libglib2.0-dev libcairo2-dev
+  poetry-install:
+    steps:
+      # See: https://circleci.com/docs/2.0/language-python/#cache-dependencies
+      - restore_cache:
+          key: &cache-key-poetry cache-poetry-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLECI_CACHE_VERSION }}-{{ checksum "poetry.lock" }}
+      - install-python-dev-tools
+      - run:
+          name: install poetry && poetry install
+          command: |
+            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+            echo 'export PATH=$HOME/.poetry/bin:$PATH' >> $BASH_ENV
+            source $BASH_ENV
+
+            poetry config virtualenvs.in-project true
+            poetry install
+      - save_cache:
+          key: *cache-key-poetry
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python*/site-packages"
+
+  prepare-github-writable-user:
+    steps:
+      - run:
+          name: Configure git user
+          command: |
+            git config user.email "bot+actfw-jetson-ci@idein.jp"
+            git config user.name "ideinbot"
+      - add_ssh_keys:
+          fingerprints:
+            - "f4:48:e9:e2:fa:05:db:c0:4d:60:7e:76:e4:66:62:08"
+
+jobs:
+  lint:
+    docker:
+      - image: python:3-buster
+        auth: &docker-hub-auth
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    steps:
+      - checkout
+      - poetry-install
+      - run:
+          name: Check code format in actfw-jetson/
+          command: |
+            [ $(poetry run autopep8 --diff --max-line-length 128 -r actfw_jetson/ | wc -l) = 0 ]
+
+  test:
+    docker:
+      - image: python:3-buster
+        auth: *docker-hub-auth
+    steps:
+      - checkout
+      - poetry-install
+      - run:
+          name: nose2
+          command: poetry run nose2 -v
+  test-with-up-to-date-dependencies:
+    docker:
+      - image: python:3-buster
+        auth: *docker-hub-auth
+    steps:
+      - checkout
+      - run:
+          name: remove lock file to get up-to-date dependencies
+          command: rm poetry.lock
+      - poetry-install
+      - run:
+          name: nose2
+          command: poetry run nose2 -v
+
+  build-api-doc:
+    docker:
+      - image: python:3-buster
+        auth: *docker-hub-auth
+    steps:
+      - checkout
+      - poetry-install
+      - run:
+          name: sphinx-build
+          command: |
+            poetry run sphinx-build docs build/sphinx/html
+      - persist_to_workspace:
+          root: build/sphinx
+          paths:
+            - html
+      - store_artifacts:  # for reviewers to check generated doc
+          path: build/sphinx/html
+          destination: html
+
+  build-package:
+    docker:
+      - image: python:3-buster
+        auth: *docker-hub-auth
+    steps:
+      - checkout
+      - poetry-install
+      - run:
+          name: Make wheel & sdist
+          command: |
+            poetry build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist
+
+  validate-version-with-tag:
+    docker:
+      - image: python:3-buster
+        auth: *docker-hub-auth
+    steps:
+      - checkout
+      - poetry-install
+      - run:
+          name: Check if git tag name is appropriate for package version
+          command: |
+            export TAG=$(echo ${CIRCLE_TAG} |sed -e 's/release-//')
+            export VERSION=$(poetry run python -c 'import actfw_jetson; print(actfw_jetson.__version__)')
+            echo "Git tag: $TAG"
+            echo "Package version: $VERSION"
+            test "$VERSION" = "$TAG"
+
+  deploy-api-doc:
+    docker:
+      - image: alpine/git
+        auth: *docker-hub-auth
+    steps:
+      - checkout
+      - run:
+          name: checkout gh-pages branch
+          command: git checkout gh-pages
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Place doc contents in version directory (linked by `latest` symlink)
+          command: |
+            export TAG=$(echo ${CIRCLE_TAG} |sed -e 's/release-//')
+            rm -rf $TAG latest
+            mkdir $TAG
+            cp -rf /tmp/workspace/html/* $TAG/
+            ln -s $TAG latest
+      - prepare-github-writable-user
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: |
+            git add .
+            git commit -m '[skip ci] updates API doc'
+            git push origin gh-pages
+
+  deploy-package:
+    docker:
+      - image: python:3-buster
+        auth: *docker-hub-auth
+    steps:
+      - checkout
+      - poetry-install
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Publish wheel & sdist to PyPI
+          working_directory: /tmp/workspace
+          command: |
+            poetry publish --username "__token__" --password "$PYPI_API_TOKEN" --no-interaction
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - lint:
+          context:
+            - docker-hub-creds
+      - test:
+          context:
+            - docker-hub-creds
+      - build-api-doc:
+          context:
+            - docker-hub-creds
+      - build-package:
+          context:
+            - docker-hub-creds
+  release:
+    jobs:
+      - validate-version-with-tag:
+          context:
+            - docker-hub-creds
+          filters: &release-filter
+            tags:
+              only: /^release-[0-9]+(\.[0-9]+){2}((a|b|rc)[0-9]+)?(.post[0-9])?(.dev[0-9])?$/
+            branches:
+              ignore: /.*/
+      - build-api-doc:
+          context:
+            - docker-hub-creds
+          requires:
+            - validate-version-with-tag
+          filters: *release-filter
+      - build-package:
+          context:
+            - docker-hub-creds
+          requires:
+            - validate-version-with-tag
+          filters: *release-filter
+      - deploy-api-doc:
+          context:
+            - docker-hub-creds
+          requires:
+            - build-api-doc
+          filters: *release-filter
+      - deploy-package:
+          context:
+            - docker-hub-creds
+          requires:
+            - build-package
+          filters: *release-filter
+  nightly:
+    triggers:
+      - schedule:
+          cron: "41 23 * * *"  # in UTC
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - lint:
+          context:
+            - docker-hub-creds
+      - test:
+          context:
+            - docker-hub-creds
+      - test-with-up-to-date-dependencies:
+          context:
+            - docker-hub-creds
+      - build-api-doc:
+          context:
+            - docker-hub-creds
+      - build-package:
+          context:
+            - docker-hub-creds
