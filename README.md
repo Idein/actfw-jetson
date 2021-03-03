@@ -81,6 +81,6 @@ CI will automatically do.
 Follow the following branch/tag rules.
 
 1. Make changes for next version in `master` branch (via pull-requests).
-2. Update `actfw_jetson/_version.py` with new version in `master` branch.
+2. Update `version` field in `pyproject.toml` with new version in `master` branch.
 3. Create Git tag from `master` branch's HEAD named `release-<New version>`. E.g. `release-1.4.0`.
 4. Then CI will build/upload package to PyPI & API doc to GitHub Pages.
