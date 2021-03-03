@@ -1,12 +1,12 @@
 import threading
-
 from PIL import Image
+from actfw_jetson.logger import DEFAULT_LOGGER
 
 
 class Display:
     """Display using nvoverlaysink plugin"""
 
-    def __init__(self, size, fps):
+    def __init__(self, size, fps, logger=DEFAULT_LOGGER):
         """
         Args:
             size (int, int): display area resolution
@@ -17,6 +17,7 @@ class Display:
         from gi.repository import Gst, GObject
         self._Gst = Gst
 
+        self._logger = logger
         self._pipeline = self._Gst.Pipeline()
 
         bus = self._pipeline.get_bus()
@@ -75,9 +76,8 @@ class Display:
         self._pipeline.set_state(self._Gst.State.NULL)
         self._glib_loop.quit()
 
-    @classmethod
-    def _on_bus_error(cls, bus, msg):
-        print('on_error():', msg.parse_error())
+    def _on_bus_error(self, bus, msg):
+        self._logger.error('on_error():', msg.parse_error())
 
     def _im_to_gst_buffer(self, im: Image):
         """Converts PIL Image (RGB) to Gst.Buffer (RGBA)"""
