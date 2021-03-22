@@ -13,9 +13,7 @@ def appsink_on_new_sample(sink, slf):
     if isinstance(sample, slf._Gst.Sample):
         im = extract_buffer(sample)
         frame = Frame(im)
-        if slf._outlet(frame):
-            slf._camera_in_frames.append(frame)
-
+        slf._outlet(frame):
         return slf._Gst.FlowReturn.OK
 
     return slf._Gst.FlowReturn.ERROR
@@ -54,8 +52,6 @@ class NVArgusCameraCapture(Producer):
 
         self._logger = logger
         self._pipeline = self._Gst.Pipeline()
-
-        self._camera_in_frames = []
 
         bus = self._pipeline.get_bus()
         bus.add_signal_watch()
