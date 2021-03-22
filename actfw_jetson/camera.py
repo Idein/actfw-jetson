@@ -1,6 +1,5 @@
 import threading
 from PIL import Image
-import numpy as np
 from actfw_jetson.logger import DEFAULT_LOGGER
 from actfw_core.task import Producer
 from actfw_core.capture import Frame
@@ -12,11 +11,7 @@ def appsink_on_new_sample(sink, slf):
     sample = sink.emit("pull-sample")
 
     if isinstance(sample, slf._Gst.Sample):
-        # array = extract_buffer(sample)
-        # im = Image.fromarray(np.uint8(array))
-
-        im = extract_buffer2(sample)
-
+        im = extract_buffer(sample)
         frame = Frame(im)
         if slf._outlet(frame):
             slf._camera_in_frames.append(frame)
@@ -27,22 +22,6 @@ def appsink_on_new_sample(sink, slf):
 
 
 def extract_buffer(sample):
-    """Extracts Gst.Buffer from Gst.Sample and converts to np.ndarray"""
-
-    buffer = sample.get_buffer()  # Gst.Buffer
-    caps_format = sample.get_caps().get_structure(0)  # Gst.Structure
-    w, h = caps_format.get_value('width'), caps_format.get_value('height')
-    c = 4  # RGBA
-    
-    buffer_size = buffer.get_size()
-    shape = (h, w, c) if (h * w * c == buffer_size) else buffer_size
-    array = np.ndarray(shape=shape, buffer=buffer.extract_dup(0, buffer_size),
-                       dtype=np.uint8)
-
-    return np.squeeze(array)  # remove single dimension if exists
-
-
-def extract_buffer2(sample):
     """Extracts Gst.Buffer from Gst.Sample and converts to PIL.Image"""
 
     buffer = sample.get_buffer()  # Gst.Buffer
