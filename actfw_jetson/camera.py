@@ -26,7 +26,7 @@ def extract_buffer(sample):
     caps_format = sample.get_caps().get_structure(0)  # Gst.Structure
     w, h = caps_format.get_value('width'), caps_format.get_value('height')
     c = 4  # RGBA
-    
+
     buffer_size = buffer.get_size()
     return Image.frombuffer('RGBA', (w, h), buffer.extract_dup(0, buffer_size))
 
