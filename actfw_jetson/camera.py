@@ -40,6 +40,8 @@ class NVArgusCameraCapture(Producer):
         from gi.repository import Gst, GObject
         self._Gst = Gst
 
+        super(NVArgusCameraCapture, self).__init__()
+
         self._logger = logger
         self._pipeline = self._Gst.Pipeline()
 
