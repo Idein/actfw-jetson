@@ -70,7 +70,9 @@ poetry run nose2 -v
 
 #### hello_jetson
 
-On a Jetson Nano connected to HDMI display:
+Displays a red rectangle and greeting text on it on HDMI display.
+
+Run on a Jetson Nano connected to HDMI display:
 
 ```console
 apt-get install fonts-dejavu-core
@@ -79,7 +81,9 @@ poetry run python example/hello_jetson
 
 #### camera_display
 
-On a Jetson Nano with CSI camera and HDMI display:
+Displays camera input on HDMI display.
+
+Run on a Jetson Nano with CSI camera and HDMI display:
 
 ```console
 poetry run python example/camera_display
