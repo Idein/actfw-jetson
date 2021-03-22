@@ -13,7 +13,7 @@ def appsink_on_new_sample(sink, slf):
     if isinstance(sample, slf._Gst.Sample):
         im = extract_buffer(sample)
         frame = Frame(im)
-        slf._outlet(frame):
+        slf._outlet(frame)
         return slf._Gst.FlowReturn.OK
 
     return slf._Gst.FlowReturn.ERROR
