@@ -5,32 +5,6 @@ from actfw_core.task import Producer
 from actfw_core.capture import Frame
 
 
-def appsink_on_new_sample(sink, slf):
-    # Emit 'pull-sample' signal
-    # https://lazka.github.io/pgi-docs/GstApp-1.0/classes/AppSink.html#GstApp.AppSink.signals.pull_sample
-    sample = sink.emit("pull-sample")
-
-    if isinstance(sample, slf._Gst.Sample):
-        im = extract_buffer(sample)
-        frame = Frame(im)
-        slf._outlet(frame)
-        return slf._Gst.FlowReturn.OK
-
-    return slf._Gst.FlowReturn.ERROR
-
-
-def extract_buffer(sample):
-    """Extracts Gst.Buffer from Gst.Sample and converts to PIL.Image"""
-
-    buffer = sample.get_buffer()  # Gst.Buffer
-    caps_format = sample.get_caps().get_structure(0)  # Gst.Structure
-    w, h = caps_format.get_value('width'), caps_format.get_value('height')
-    c = 4  # RGBA
-
-    buffer_size = buffer.get_size()
-    return Image.frombuffer('RGBA', (w, h), buffer.extract_dup(0, buffer_size))
-
-
 class NVArgusCameraCapture(Producer):
     """Camera using nvarguscamerasrc plugin.
 
@@ -89,7 +63,7 @@ class NVArgusCameraCapture(Producer):
         capsfilter2.link(appsink)
 
         # subscribe to <new-sample> signal
-        appsink.connect("new-sample", appsink_on_new_sample, self)
+        appsink.connect("new-sample", _appsink_on_new_sample, self)
 
         self._pipeline.set_state(self._Gst.State.PLAYING)
 
@@ -106,3 +80,29 @@ class NVArgusCameraCapture(Producer):
 
     def _on_bus_error(self, bus, msg):
         self._logger.error('on_error():', msg.parse_error())
+
+
+def _appsink_on_new_sample(sink, slf):
+    # Emit 'pull-sample' signal
+    # https://lazka.github.io/pgi-docs/GstApp-1.0/classes/AppSink.html#GstApp.AppSink.signals.pull_sample
+    sample = sink.emit("pull-sample")
+
+    if isinstance(sample, slf._Gst.Sample):
+        im = _extract_buffer(sample)
+        frame = Frame(im)
+        slf._outlet(frame)
+        return slf._Gst.FlowReturn.OK
+
+    return slf._Gst.FlowReturn.ERROR
+
+
+def _extract_buffer(sample):
+    """Extracts Gst.Buffer from Gst.Sample and converts to PIL.Image"""
+
+    buffer = sample.get_buffer()  # Gst.Buffer
+    caps_format = sample.get_caps().get_structure(0)  # Gst.Structure
+    w, h = caps_format.get_value('width'), caps_format.get_value('height')
+    c = 4  # RGBA
+
+    buffer_size = buffer.get_size()
+    return Image.frombuffer('RGBA', (w, h), buffer.extract_dup(0, buffer_size))
