@@ -68,11 +68,22 @@ poetry run nose2 -v
 
 ### Running examples
 
+#### hello_jetson
+
 On a Jetson Nano connected to HDMI display:
 
 ```console
 apt-get install fonts-dejavu-core
 poetry run python example/hello_jetson
+```
+
+#### camera_display
+
+On a Jetson Nano with CSI camera and HDMI display:
+
+```console
+poetry run pip3 install numpy==1.18.5  # At least 1.19.5 causes Illegal instruction error by: `python3 -c 'import numpy'`
+poetry run python example/camera_display
 ```
 
 ### Releasing package & API doc

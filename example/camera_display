@@ -21,7 +21,7 @@ class Presenter(Consumer):
             self.display = Display((CAPTURE_WIDTH, CAPTURE_HEIGHT), FPS)
 
     def proc(self, frame):
-        image = Image.frombuffer('RGB', (CAPTURE_WIDTH, CAPTURE_HEIGHT), frame.getvalue(), 'raw', 'RGB')
+        image = frame.getvalue()
         self.cmd.update_image(image)  # update `Take Photo` image
         actfw_core.notify([{'test': True}])
         actfw_core.heartbeat()
