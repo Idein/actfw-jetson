@@ -75,20 +75,20 @@ class NVArgusCameraCapture(Producer):
         appsink = self._Gst.ElementFactory.make('appsink')
         appsink.set_property('emit-signals', True)
 
-        ## add elements
+        # add elements
         self._pipeline.add(nvarguscamerasrc)
         self._pipeline.add(capsfilter1)
         self._pipeline.add(nvvidconv)
         self._pipeline.add(capsfilter2)
         self._pipeline.add(appsink)
 
-        ## link elements
+        # link elements
         nvarguscamerasrc.link(capsfilter1)
         capsfilter1.link(nvvidconv)
         nvvidconv.link(capsfilter2)
         capsfilter2.link(appsink)
 
-        ## subscribe to <new-sample> signal
+        # subscribe to <new-sample> signal
         appsink.connect("new-sample", appsink_on_new_sample, self)
 
         self._pipeline.set_state(self._Gst.State.PLAYING)
