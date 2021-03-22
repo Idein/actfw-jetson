@@ -5,6 +5,24 @@ from actfw_core.task import Producer
 from actfw_core.capture import Frame
 
 
+def appsink_on_new_sample(sink, slf):
+    # Emit 'pull-sample' signal
+    # https://lazka.github.io/pgi-docs/GstApp-1.0/classes/AppSink.html#GstApp.AppSink.signals.pull_sample
+    sample = sink.emit("pull-sample")
+
+    if isinstance(sample, Gst.Sample):
+        array = extract_buffer(sample)
+
+        im = Image.fromarray(np.uint8(array))
+        frame = Frame(im)
+        if slf._outlet(frame):
+            slf._camera_in_frames.append(frame)
+
+        return Gst.FlowReturn.OK
+
+    return Gst.FlowReturn.ERROR
+
+
 class NVArgusCameraCapture(Producer):
     """Camera using nvarguscamerasrc plugin.
 
@@ -63,7 +81,7 @@ class NVArgusCameraCapture(Producer):
         capsfilter2.link(appsink)
 
         ## subscribe to <new-sample> signal
-        appsink.connect("new-sample", NVArgusCameraCapture._appsink_on_new_sample, self)
+        appsink.connect("new-sample", appsink_on_new_sample, self)
 
         self._pipeline.set_state(self._Gst.State.PLAYING)
 
@@ -77,24 +95,6 @@ class NVArgusCameraCapture(Producer):
     def stop(self):
         self._pipeline.set_state(self._Gst.State.NULL)
         self._glib_loop.quit()
-
-    @classmethod
-    def _appsink_on_new_sample(sink, slf):
-        # Emit 'pull-sample' signal
-        # https://lazka.github.io/pgi-docs/GstApp-1.0/classes/AppSink.html#GstApp.AppSink.signals.pull_sample
-        sample = sink.emit("pull-sample")
-
-        if isinstance(sample, Gst.Sample):
-            array = extract_buffer(sample)
-
-            im = Image.fromarray(np.uint8(array))
-            frame = Frame(im)
-            if slf._outlet(frame):
-                slf._camera_in_frames.append(frame)
-
-            return Gst.FlowReturn.OK
-
-        return Gst.FlowReturn.ERROR
 
     def _on_bus_error(self, bus, msg):
         self._logger.error('on_error():', msg.parse_error())
