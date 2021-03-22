@@ -10,7 +10,7 @@ def appsink_on_new_sample(sink, slf):
     # https://lazka.github.io/pgi-docs/GstApp-1.0/classes/AppSink.html#GstApp.AppSink.signals.pull_sample
     sample = sink.emit("pull-sample")
 
-    if isinstance(sample, Gst.Sample):
+    if isinstance(sample, slf._Gst.Sample):
         array = extract_buffer(sample)
 
         im = Image.fromarray(np.uint8(array))
@@ -18,9 +18,9 @@ def appsink_on_new_sample(sink, slf):
         if slf._outlet(frame):
             slf._camera_in_frames.append(frame)
 
-        return Gst.FlowReturn.OK
+        return slf._Gst.FlowReturn.OK
 
-    return Gst.FlowReturn.ERROR
+    return slf._Gst.FlowReturn.ERROR
 
 
 class NVArgusCameraCapture(Producer):
