@@ -15,7 +15,7 @@ def appsink_on_new_sample(sink, slf):
         # array = extract_buffer(sample)
         # im = Image.fromarray(np.uint8(array))
 
-        img = extract_buffer2(sample)
+        im = extract_buffer2(sample)
 
         frame = Frame(im)
         if slf._outlet(frame):
