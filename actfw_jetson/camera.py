@@ -1,6 +1,8 @@
 import threading
 from PIL import Image
 from actfw_jetson.logger import DEFAULT_LOGGER
+from actfw_core.task import Producer
+from actfw_core.capture import Frame
 
 
 class NVArgusCameraCapture(Producer):
