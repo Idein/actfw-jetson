@@ -63,7 +63,7 @@ class NVArgusCameraCapture(Producer):
         capsfilter.link(appsink)
 
         ## subscribe to <new-sample> signal
-        appsink.connect("new-sample", NVArguesCameraCapture._appsink_on_new_sample, self)
+        appsink.connect("new-sample", NVArgusCameraCapture._appsink_on_new_sample, self)
 
         self._pipeline.set_state(self._Gst.State.PLAYING)
 
