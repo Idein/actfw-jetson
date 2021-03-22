@@ -34,15 +34,15 @@ class NVArgusCameraCapture(Producer):
         # define elements
         nvarguscamerasrc = self._Gst.ElementFactory.make('nvarguscamerasrc')
 
-        capsfilter = self._Gst.ElementFactory.make('capsfilter')
-        capsfilter.set_property('caps', self._Gst.caps_from_string(
+        capsfilter1 = self._Gst.ElementFactory.make('capsfilter')
+        capsfilter1.set_property('caps', self._Gst.caps_from_string(
             f'video/x-raw(memory:NVMM),format=NV12,width={size[0]},height={size[1]},framerate={fps}/1'
         ))
 
         # converts from NV12 into RGBA
         nvvidconv = self._Gst.ElementFactory.make('nvvidconv')
-        capsfilter = self._Gst.ElementFactory.make('capsfilter')
-        capsfilter.set_property('caps', self._Gst.caps_from_string(
+        capsfilter2 = self._Gst.ElementFactory.make('capsfilter')
+        capsfilter2.set_property('caps', self._Gst.caps_from_string(
             'video/x-raw,format=RGBA'
         ))
 
@@ -51,16 +51,16 @@ class NVArgusCameraCapture(Producer):
 
         ## add elements
         self._pipeline.add(nvarguscamerasrc)
-        self._pipeline.add(capsfilter)
+        self._pipeline.add(capsfilter1)
         self._pipeline.add(nvvidconv)
-        self._pipeline.add(capsfilter)
+        self._pipeline.add(capsfilter2)
         self._pipeline.add(appsink)
 
         ## link elements
-        nvarguscamerasrc.link(capsfilter)
-        capsfilter.link(nvvidconv)
-        nvvidconv.link(capsfilter)
-        capsfilter.link(appsink)
+        nvarguscamerasrc.link(capsfilter1)
+        capsfilter1.link(nvvidconv)
+        nvvidconv.link(capsfilter2)
+        capsfilter2.link(appsink)
 
         ## subscribe to <new-sample> signal
         appsink.connect("new-sample", NVArgusCameraCapture._appsink_on_new_sample, self)
