@@ -63,7 +63,7 @@ class NVArgusCameraCapture(Producer):
         capsfilter.link(appsink)
 
         ## subscribe to <new-sample> signal
-        appsink.connect("new-sample", _appsink_on_new_sample, self)
+        appsink.connect("new-sample", NVArguesCameraCapture._appsink_on_new_sample, self)
 
         self._pipeline.set_state(self._Gst.State.PLAYING)
 
@@ -74,6 +74,11 @@ class NVArgusCameraCapture(Producer):
         # _appsink_on_new_sample produces frames
         pass
 
+    def stop(self):
+        self._pipeline.set_state(self._Gst.State.NULL)
+        self._glib_loop.quit()
+
+    @classmethod
     def _appsink_on_new_sample(sink, slf):
         # Emit 'pull-sample' signal
         # https://lazka.github.io/pgi-docs/GstApp-1.0/classes/AppSink.html#GstApp.AppSink.signals.pull_sample
@@ -90,10 +95,6 @@ class NVArgusCameraCapture(Producer):
             return Gst.FlowReturn.OK
 
         return Gst.FlowReturn.ERROR
-
-    def stop(self):
-        self._pipeline.set_state(self._Gst.State.NULL)
-        self._glib_loop.quit()
 
     def _on_bus_error(self, bus, msg):
         self._logger.error('on_error():', msg.parse_error())
