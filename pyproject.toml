@@ -20,11 +20,8 @@ python = "^3.6"
 actfw-gstreamer = "*"
 
 [tool.poetry.dev-dependencies]
-# Tests
 nose2 = "*"
-# Lint
 autopep8 = "*"
-# Document
 sphinx = "*"
 sphinx-theme = "*"
 
