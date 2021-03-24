@@ -127,7 +127,7 @@ jobs:
           name: Check if git tag name is appropriate for package version
           command: |
             export TAG=$(echo ${CIRCLE_TAG} |sed -e 's/release-//')
-            export VERSION=$(poetry run python -c 'import actfw_jetson; print(actfw_jetson.__version__)')
+            export VERSION=$(poetry run python -c 'import pkg_resources; print(pkg_resources.get_distribution("actfw-jetson").version)')
             echo "Git tag: $TAG"
             echo "Package version: $VERSION"
             test "$VERSION" = "$TAG"
