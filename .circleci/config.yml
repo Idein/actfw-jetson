@@ -8,7 +8,7 @@ commands:
           command: |
             apt-get update
             apt-get install -y --no-install-recommends ca-certificates python3-pip
-            apt-get install -y --no-install-recommends libgstreamer1.0-dev libgirepository1.0-dev ibgstreamer-plugins-base1.0-dev libglib2.0-dev libcairo2-dev
+            apt-get install -y --no-install-recommends libgstreamer1.0-dev libgirepository1.0-dev libglib2.0-dev libcairo2-dev
   poetry-install:
     steps:
       # See: https://circleci.com/docs/2.0/language-python/#cache-dependencies
