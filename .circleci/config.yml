@@ -170,8 +170,8 @@ jobs:
           at: /tmp/workspace
       - run:
           name: Publish wheel & sdist to PyPI
-          working_directory: /tmp/workspace
           command: |
+            mv /tmp/workspace/dist .
             poetry publish --username "__token__" --password "$PYPI_API_TOKEN" --no-interaction
 
 workflows:
