@@ -17,6 +17,7 @@ version = "0.1.0"
 [tool.poetry.dependencies]
 python = "^3.6"
 
+actfw-core = "^1.5.2"
 actfw-gstreamer = "*"
 
 [tool.poetry.dev-dependencies]

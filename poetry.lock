@@ -1,6 +1,6 @@
 [[package]]
 name = "actfw-core"
-version = "1.4.0"
+version = "1.5.2"
 description = "Core components of actfw, independent of specific devices"
 category = "main"
 optional = false
@@ -50,18 +50,6 @@ dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", 
 docs = ["furo", "sphinx", "zope.interface"]
 tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface"]
 tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six"]
-
-[[package]]
-name = "autopep8"
-version = "1.5.6"
-description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-pycodestyle = ">=2.7.0"
-toml = "*"
 
 [[package]]
 name = "babel"
@@ -684,12 +672,12 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "c555283045bb7f65fae1e2abaee37f41a35cbe8101e0b67c201957d95e0f8890"
+content-hash = "c8f1ae46525e87ef6b4fbb324b33c114c6fedddaf7ffdc3501d50e641dfb78c9"
 
 [metadata.files]
 actfw-core = [
-    {file = "actfw-core-1.4.0.tar.gz", hash = "sha256:2b70ef79e266e0bd3f1a53f2e0f03b487afe6601feb7199ed04e069f3909780c"},
-    {file = "actfw_core-1.4.0-py3-none-any.whl", hash = "sha256:c90e30f3a3088945eb3e3d7876598388b28823f5ef19cb0196db08b5a8eaea04"},
+    {file = "actfw-core-1.5.2.tar.gz", hash = "sha256:b9bb36b455033184f375766657e67dad0cb74226027fb344f4f3bcb31eebb3b2"},
+    {file = "actfw_core-1.5.2-py3-none-any.whl", hash = "sha256:a77106355b2a9604626f19778b669d63c0402361e1b7d42f211e323ae07177cc"},
 ]
 actfw-gstreamer = [
     {file = "actfw-gstreamer-0.1.0a6.tar.gz", hash = "sha256:2b061df6a20cb5bf9782d4bcdc374c98e9f76ee94de3185afb808128ef80203b"},
@@ -706,10 +694,6 @@ appdirs = [
 attrs = [
     {file = "attrs-20.3.0-py2.py3-none-any.whl", hash = "sha256:31b2eced602aa8423c2aea9c76a724617ed67cf9513173fd3a4f03e3a929c7e6"},
     {file = "attrs-20.3.0.tar.gz", hash = "sha256:832aa3cde19744e49938b91fea06d69ecb9e649c93ba974535d08ad92164f700"},
-]
-autopep8 = [
-    {file = "autopep8-1.5.6-py2.py3-none-any.whl", hash = "sha256:f01b06a6808bc31698db907761e5890eb2295e287af53f6693b39ce55454034a"},
-    {file = "autopep8-1.5.6.tar.gz", hash = "sha256:5454e6e9a3d02aae38f866eec0d9a7de4ab9f93c10a273fb0340f3d6d09f7514"},
 ]
 babel = [
     {file = "Babel-2.9.0-py2.py3-none-any.whl", hash = "sha256:9d35c22fcc79893c3ecc85ac4a56cde1ecf3f19c540bba0922308a6c06ca6fa5"},
