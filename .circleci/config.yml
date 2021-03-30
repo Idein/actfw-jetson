@@ -126,8 +126,8 @@ jobs:
       - run:
           name: Check if git tag name is appropriate for package version
           command: |
-            export TAG=$(echo ${CIRCLE_TAG} |sed -e 's/release-//')
-            export VERSION=$(poetry run python -c 'import pkg_resources; print(pkg_resources.get_distribution("actfw-jetson").version)')
+            TAG=$(echo ${CIRCLE_TAG} |sed -e 's/release-//')
+            VERSION=$(poetry run python -c 'import pkg_resources; print(pkg_resources.get_distribution("actfw-jetson").version)')
             echo "Git tag: $TAG"
             echo "Package version: $VERSION"
             test "$VERSION" = "$TAG"
@@ -146,7 +146,7 @@ jobs:
       - run:
           name: Place doc contents in version directory (linked by `latest` symlink)
           command: |
-            export TAG=$(echo ${CIRCLE_TAG} |sed -e 's/release-//')
+            TAG=$(echo ${CIRCLE_TAG} |sed -e 's/release-//')
             rm -rf $TAG latest
             mkdir $TAG
             cp -rf /tmp/workspace/html/* $TAG/
