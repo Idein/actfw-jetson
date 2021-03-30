@@ -6,7 +6,7 @@ from actfw_jetson.logger import DEFAULT_LOGGER
 from PIL import Image
 
 
-class NVArgusCameraCapture(Producer):
+class NVArgusCameraCapture(Producer):  # type: ignore
     """Camera using nvarguscamerasrc plugin.
 
     Outputs :class:`~actfw_core.capture.Frame` whose content value is PIL.Image.

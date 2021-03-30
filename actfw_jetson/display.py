@@ -62,7 +62,7 @@ class Display:
         self._glib_loop = GObject.MainLoop()
         threading.Thread(target=self._glib_loop.run).start()
 
-    def update(self, src_im: Image):
+    def update(self, src_im: Image) -> "Gst.FlowReturn":  # type: ignore  # noqa F821
         """
         Update display.
 
@@ -77,10 +77,10 @@ class Display:
         self._pipeline.set_state(self._Gst.State.NULL)
         self._glib_loop.quit()
 
-    def _on_bus_error(self, bus, msg):
+    def _on_bus_error(self, bus: "Gst.Bus", msg: "Gst.Message") -> None:  # type: ignore  # noqa F821
         self._logger.error("on_error():", msg.parse_error())
 
-    def _im_to_gst_buffer(self, im: Image):
+    def _im_to_gst_buffer(self, im: Image) -> "Gst.Buffer":  # type: ignore  # noqa F821
         """Converts PIL Image (RGB) to Gst.Buffer (RGBA)"""
         im.putalpha(255)
         return self._Gst.Buffer.new_wrapped(im.tobytes())
