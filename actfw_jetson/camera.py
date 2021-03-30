@@ -1,8 +1,9 @@
 import threading
-from PIL import Image
-from actfw_jetson.logger import DEFAULT_LOGGER
-from actfw_core.task import Producer
+
 from actfw_core.capture import Frame
+from actfw_core.task import Producer
+from actfw_jetson.logger import DEFAULT_LOGGER
+from PIL import Image
 
 
 class NVArgusCameraCapture(Producer):
@@ -18,8 +19,10 @@ class NVArgusCameraCapture(Producer):
             fps (int): framerate
         """
         import gi
-        gi.require_version('Gst', '1.0')
-        from gi.repository import Gst, GObject
+
+        gi.require_version("Gst", "1.0")
+        from gi.repository import GObject, Gst
+
         self._Gst = Gst
 
         super(NVArgusCameraCapture, self).__init__()
@@ -29,25 +32,26 @@ class NVArgusCameraCapture(Producer):
 
         bus = self._pipeline.get_bus()
         bus.add_signal_watch()
-        bus.connect('message::error', self._on_bus_error)
+        bus.connect("message::error", self._on_bus_error)
 
         # define elements
-        nvarguscamerasrc = self._Gst.ElementFactory.make('nvarguscamerasrc')
+        nvarguscamerasrc = self._Gst.ElementFactory.make("nvarguscamerasrc")
 
-        capsfilter1 = self._Gst.ElementFactory.make('capsfilter')
-        capsfilter1.set_property('caps', self._Gst.caps_from_string(
-            f'video/x-raw(memory:NVMM),format=NV12,width={size[0]},height={size[1]},framerate={fps}/1'
-        ))
+        capsfilter1 = self._Gst.ElementFactory.make("capsfilter")
+        capsfilter1.set_property(
+            "caps",
+            self._Gst.caps_from_string(
+                f"video/x-raw(memory:NVMM),format=NV12,width={size[0]},height={size[1]},framerate={fps}/1"
+            ),
+        )
 
         # converts from NV12 into RGBA to use input data of PIL.Image.frombytes.
-        nvvidconv = self._Gst.ElementFactory.make('nvvidconv')
-        capsfilter2 = self._Gst.ElementFactory.make('capsfilter')
-        capsfilter2.set_property('caps', self._Gst.caps_from_string(
-            'video/x-raw,format=RGBA'
-        ))
+        nvvidconv = self._Gst.ElementFactory.make("nvvidconv")
+        capsfilter2 = self._Gst.ElementFactory.make("capsfilter")
+        capsfilter2.set_property("caps", self._Gst.caps_from_string("video/x-raw,format=RGBA"))
 
-        appsink = self._Gst.ElementFactory.make('appsink')
-        appsink.set_property('emit-signals', True)
+        appsink = self._Gst.ElementFactory.make("appsink")
+        appsink.set_property("emit-signals", True)
 
         # add elements
         self._pipeline.add(nvarguscamerasrc)
@@ -79,7 +83,7 @@ class NVArgusCameraCapture(Producer):
         self._glib_loop.quit()
 
     def _on_bus_error(self, bus, msg):
-        self._logger.error('on_error():', msg.parse_error())
+        self._logger.error("on_error():", msg.parse_error())
 
 
 def _appsink_on_new_sample(sink, slf):
@@ -101,7 +105,7 @@ def _extract_buffer(sample):
 
     buffer = sample.get_buffer()  # Gst.Buffer
     caps_format = sample.get_caps().get_structure(0)  # Gst.Structure
-    w, h = caps_format.get_value('width'), caps_format.get_value('height')
+    w, h = caps_format.get_value("width"), caps_format.get_value("height")
 
     buffer_size = buffer.get_size()
-    return Image.frombuffer('RGBA', (w, h), buffer.extract_dup(0, buffer_size))
+    return Image.frombuffer("RGBA", (w, h), buffer.extract_dup(0, buffer_size))

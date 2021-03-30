@@ -1,6 +1,7 @@
 import threading
-from PIL import Image
+
 from actfw_jetson.logger import DEFAULT_LOGGER
+from PIL import Image
 
 
 class Display:
@@ -13,8 +14,10 @@ class Display:
             fps (int): framerate
         """
         import gi
-        gi.require_version('Gst', '1.0')
-        from gi.repository import Gst, GObject
+
+        gi.require_version("Gst", "1.0")
+        from gi.repository import GObject, Gst
+
         self._Gst = Gst
 
         self._logger = logger
@@ -22,26 +25,24 @@ class Display:
 
         bus = self._pipeline.get_bus()
         bus.add_signal_watch()
-        bus.connect('message::error', Display._on_bus_error)
+        bus.connect("message::error", Display._on_bus_error)
 
         # define elements
-        self._appsrc = self._Gst.ElementFactory.make('appsrc')
-        self._appsrc.set_property('is-live', True)
-        self._appsrc.set_property('block', True)
+        self._appsrc = self._Gst.ElementFactory.make("appsrc")
+        self._appsrc.set_property("is-live", True)
+        self._appsrc.set_property("block", True)
 
-        capsfilter1 = self._Gst.ElementFactory.make('capsfilter')
-        capsfilter1.set_property('caps', self._Gst.caps_from_string(
-            f'video/x-raw,format=RGBA,width={size[0]},height={size[1]},framerate={fps}/1'
-        ))
+        capsfilter1 = self._Gst.ElementFactory.make("capsfilter")
+        capsfilter1.set_property(
+            "caps", self._Gst.caps_from_string(f"video/x-raw,format=RGBA,width={size[0]},height={size[1]},framerate={fps}/1")
+        )
 
-        nvvidconv = self._Gst.ElementFactory.make('nvvidconv')
+        nvvidconv = self._Gst.ElementFactory.make("nvvidconv")
 
-        capsfilter2 = self._Gst.ElementFactory.make('capsfilter')
-        capsfilter2.set_property('caps', self._Gst.caps_from_string(
-            'video/x-raw(memory:NVMM),format=NV12'
-        ))
+        capsfilter2 = self._Gst.ElementFactory.make("capsfilter")
+        capsfilter2.set_property("caps", self._Gst.caps_from_string("video/x-raw(memory:NVMM),format=NV12"))
 
-        nvoverlaysink = self._Gst.ElementFactory.make('nvoverlaysink')
+        nvoverlaysink = self._Gst.ElementFactory.make("nvoverlaysink")
 
         # add elements
         self._pipeline.add(self._appsrc)
@@ -69,7 +70,7 @@ class Display:
             src_im (PIL.Image): update image (RGB)
         """
         gst_buffer = self._im_to_gst_buffer(src_im)
-        self._appsrc.emit('push-buffer', gst_buffer)
+        self._appsrc.emit("push-buffer", gst_buffer)
         return self._Gst.FlowReturn.OK
 
     def stop(self):
@@ -77,7 +78,7 @@ class Display:
         self._glib_loop.quit()
 
     def _on_bus_error(self, bus, msg):
-        self._logger.error('on_error():', msg.parse_error())
+        self._logger.error("on_error():", msg.parse_error())
 
     def _im_to_gst_buffer(self, im: Image):
         """Converts PIL Image (RGB) to Gst.Buffer (RGBA)"""
