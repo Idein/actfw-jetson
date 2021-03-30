@@ -26,6 +26,14 @@ nose2 = "^0.10.0"
 sphinx-theme = "^1.0"
 pysen = {version = "^0.9.1", extras = ["lint"]}
 
+[tool.pysen.lint]
+enable_black = true
+enable_flake8 = true
+enable_isort = true
+enable_mypy = false
+line_length = 128
+py_version = "py38"
+
 [build-system]
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core>=1.0.0"]
