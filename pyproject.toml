@@ -24,6 +24,7 @@ Sphinx = "^3.5.3"
 autopep8 = "^1.5.6"
 nose2 = "^0.10.0"
 sphinx-theme = "^1.0"
+pysen = {version = "^0.9.1", extras = ["lint"]}
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
