@@ -36,7 +36,7 @@ commands:
       - run:
           name: Configure git user
           command: |
-            git config user.email "bot+actfw-jetson-ci@idein.jp"
+            git config user.email "bot@idein.jp"
             git config user.name "ideinbot"
       - add_ssh_keys:
           fingerprints:
