@@ -32,7 +32,7 @@ copyright = "2021, Idein Inc."
 author = "Idein Inc."
 
 # The full version, including alpha/beta/rc tags
-release = pkg_resources.get_distribution("actfw-jetson").version
+release = pkg_resources.get_distribution(project).version
 
 
 # -- General configuration ---------------------------------------------------
