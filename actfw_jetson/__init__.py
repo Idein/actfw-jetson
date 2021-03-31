@@ -1,2 +1,2 @@
-from .camera import NVArgusCameraCapture
-from .display import Display
+from .camera import NVArgusCameraCapture  # noqa F401
+from .display import Display  # noqa F401
