@@ -36,7 +36,7 @@ commands:
       - run:
           name: Configure git user
           command: |
-            git config user.email "bot+actfw-jetson-ci@idein.jp"
+            git config user.email "bot@idein.jp"
             git config user.name "ideinbot"
       - add_ssh_keys:
           fingerprints:
@@ -53,9 +53,9 @@ jobs:
       - checkout
       - poetry-install
       - run:
-          name: Check code format in actfw-jetson/
+          name: Lint
           command: |
-            [ $(poetry run autopep8 --diff --max-line-length 128 -r actfw_jetson/ | wc -l) = 0 ]
+            poetry run pysen run lint
 
   test:
     docker:

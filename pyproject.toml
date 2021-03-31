@@ -21,9 +21,21 @@ actfw-gstreamer = "*"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^3.5.3"
-autopep8 = "^1.5.6"
 nose2 = "^0.10.0"
+pysen = {version = "^0.9.1", extras = ["lint"]}
 sphinx-theme = "^1.0"
+
+[tool.pysen.lint]
+enable_black = true
+enable_flake8 = true
+enable_isort = true
+enable_mypy = true
+mypy_preset = "entry"
+line_length = 128
+py_version = "py38"
+
+[[tool.pysen.lint.mypy_targets]]
+paths = ["."]
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
