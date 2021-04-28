@@ -1,9 +1,11 @@
-from nose2.tools import params
+import pytest
 
 
-@params(
-    {"from": "actfw_jetson", "import": "Display"},
-    {"from": "actfw_jetson", "import": "NVArgusCameraCapture"},
+@pytest.mark.parametrize(
+    "from_, import_",
+    [
+        ("actfw_jetson", "Display, NVArgusCameraCapture"),
+    ],
 )
-def test_import_actfw_gstreamer(param):
-    exec(f"""from {param['from']} import {param['import']}""")
+def test_import_actfw_jetson(from_, import_):
+    exec(f"""from {from_} import {import_}""")
