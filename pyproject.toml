@@ -20,8 +20,7 @@ python = "^3.6"
 # See comment in https://github.com/Idein/actfw-core/blob/master/pyproject.toml .
 Pillow = "^5"
 PyGObject = "^3.40.1"
-actfw-core = "^1.5.2"
-actfw-gstreamer = "*"
+actfw-core = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^3.5.3"
