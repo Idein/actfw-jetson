@@ -2,7 +2,7 @@
 
 ## 0.1.2 (2021-09-06)
 
-- Loosen the version restriction of `PyGObject` to be compatible with a `python3-gi` package provided by apt in Jetson application's base image.
+- Loosen the version requirement of `PyGObject` to be compatible with a `python3-gi` package provided by apt in Jetson application's base image.
 
 ## 0.1.1 (2021-09-02)
 
