@@ -12,14 +12,14 @@ license = "MIT"
 name = "actfw-jetson"
 readme = "README.md"
 repository = "https://github.com/Idein/actfw-jetson"
-version = "0.1.1"
+version = "0.1.2"
 
 [tool.poetry.dependencies]
 python = "^3.6"
 
 # See comment in https://github.com/Idein/actfw-core/blob/master/pyproject.toml .
 Pillow = "^5"
-PyGObject = "^3.40.1"
+PyGObject = "^3.26.1"
 actfw-core = "^2.1.1"
 
 [tool.poetry.dev-dependencies]
