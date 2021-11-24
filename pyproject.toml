@@ -23,7 +23,7 @@ PyGObject = "^3.26.1"
 actfw-core = "^2.1.1"
 
 [tool.poetry.dev-dependencies]
-Sphinx = "^3.5.3"
+Sphinx = "^4.3.0"
 pyproject-indirect-import-detector = "^0.1.1"
 pysen = {version = "^0.9.1", extras = ["lint"]}
 pytest = "^6.2.3"
