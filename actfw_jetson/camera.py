@@ -69,13 +69,12 @@ class NVArgusCameraCapture(Producer):  # type: ignore
         # subscribe to <new-sample> signal
         appsink.connect("new-sample", _appsink_on_new_sample, self)
 
-        self._pipeline.set_state(self._Gst.State.PLAYING)
-
         self._glib_loop = GObject.MainLoop()
+        threading.Thread(target=self._glib_loop.run).start()
 
     def run(self):
         # _appsink_on_new_sample produces frames
-        threading.Thread(target=self._glib_loop.run).start()
+        self._pipeline.set_state(self._Gst.State.PLAYING)
 
     def stop(self):
         self._pipeline.set_state(self._Gst.State.NULL)
